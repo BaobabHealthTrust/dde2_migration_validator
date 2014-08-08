@@ -1,5 +1,22 @@
 == README
 
-Application to validate DDE to DDE2 migration.
+Application to validate DDE to DDE2 migration.It runs on Ruby 2.1.2 and Rails 4.1.0
+
+How to setup:
+
+* copy config/couchdb.yml.example to config/couchdb.yml
+
+* copy config/database.yml.example to config/database.yml
+
+* copy config/secrets.yml.example to config/secrets.yml
+
+* copy config/site_config.yml.example to config/site_config.yml
+
+* configure couchdb.yml and database.yml to point to correct databases
+
+* generate a secret for secrets.yml if you want to run the application in production
+
+* leave site_config.yml with the defaults
+
 
 

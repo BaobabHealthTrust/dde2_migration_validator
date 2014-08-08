@@ -1,0 +1,12 @@
+default: &default
+  mode: proxy        # allowed: master|proxy
+
+production:
+  <<: *default
+  mode: proxy
+  
+development:
+  <<: *default
+  mode: proxy
+  
+

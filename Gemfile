@@ -32,6 +32,7 @@ gem 'rb-readline'
 
 gem 'national_patient_id', '0.1.1'
 
+gem 'mysql2', '0.3.16'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

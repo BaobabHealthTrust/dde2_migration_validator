@@ -1,0 +1,64 @@
+<style type="text/css">
+
+
+#counter {
+  width: 500px;
+  height: 250px;
+  border: 1px dotted red;
+  background-color: brown;
+  float: left; 
+  }
+
+#searchbox {
+  width: 500px;
+  height: 250px;
+  border: 1px dotted red;
+  background-color: teal;
+  float: right; 
+  }
+
+#error_message{
+  width: 1200px;
+  height: 40px;
+  margin-left: auto;
+  margin-right:auto;
+  border: 1px dotted red;
+  background-color: tomato;
+  clear: both;
+ }
+
+#search_results {
+ width: 1200px;
+ height: 400px;
+ margin-left: auto;
+ margin-right: auto;
+ border: 1px dotted red;
+ background-color: blue;
+ clear: both;
+
+}
+
+</style>
+<h1>DDE to DDE2 Migration Validator</h1>
+<div id="counter">
+<p>DDE2 people count: <%= @people_count %></p>
+<p>Script iteration count:</p>
+</div>
+
+<div id="searchbox">
+<%= form_tag("/people/index", method:"get") do %>
+  <%= text_field_tag(:npid)%>
+  <%= submit_tag("Find record")%>
+<% end %>
+</div>
+
+
+<div id="search_results">
+<div id="error_message">
+<p><%= @error %></p>
+</div>
+<div id="dde_person">
+</div>
+<div id="dde2_person">
+</div>
+</div> 

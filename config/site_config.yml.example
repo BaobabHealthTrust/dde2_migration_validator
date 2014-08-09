@@ -1,12 +1,18 @@
 default: &default
-  mode: proxy        # allowed: master|proxy
+  mode:    proxy        # allowed: master|proxy
+  site_id: 9999         # ID of the site this service is runnig on.
 
 production:
   <<: *default
   mode: proxy
-  
+  site_id: 1
+
 development:
   <<: *default
   mode: proxy
-  
+  site_id: 1
 
+integration:
+  mode: master
+  site_id: 0
+  

@@ -19,14 +19,23 @@
   }
 
 #error_message{
-  width: 1168px;
+  width: 1148px;
   height: 40px;
   margin-left: auto;
   margin-right:auto;
-  color: red;
-  background-color: beige;
   clear: both;
  }
+.error {
+  background-color: #FF3300;
+}
+
+.mismatch {
+ background-color: #CCFF66;
+}
+
+.match {
+ background-color: #66FF00;
+}
 
 #search_results {
  width: 1168px;
@@ -78,33 +87,58 @@
 <% end %>
 </div>
 
-
 <div id="search_results">
+
+<% unless @dde_person.blank?
+   unless @dde2_person.blank?
+     national_id_mismatch =  @dde_person.national_patient_identifier.value.to_s != @dde2_person.national_id.to_s ? true : nil
+     site_code_mismatch =  @dde_person.national_patient_identifier.assigner_site.code.to_s != @dde2_person.assigned_site.to_s ? true : nil
+     given_name_mismatch = @dde_person.given_name.to_s != @dde2_person.names.given_name.to_s ? true : nil
+     family_name_mismatch = @dde_person.family_name.to_s != @dde2_person.names.family_name.to_s ? true : nil
+     gender_mismatch =  @dde_person.gender.to_s != @dde2_person.gender.to_s ? true : nil
+     birthdate_mismatch = @dde_person.birthdate.to_s != @dde2_person.birthdate.to_s ? true : nil
+     birthdate_estimated_mismatch = @dde_person.birthdate_estimated.to_s != @dde2_person.birthdate_estimated.to_s ? true : nil
+
+     if national_id_mismatch || site_code_mismatch || given_name_mismatch || family_name_mismatch || gender_mismatch || birthdate_mismatch   || birthdate_estimated_mismatch
+     		mismatch = true
+     else
+     		mismatch = false 
+    end 
+   end
+end
+
+%>
+
+
 <div id="error_message">
-<p><%= @error %></p>
+<p class="error"><%= @error  %></p>
+<p class="mismatch"><%= "The records do not match"  if mismatch == true %><p>
+<p class="match"><%= "The records match"  if mismatch == false %><p>
 </div>
 <div id="dde_person">
+
+
 <table>
 <tr><th>DDE</th></tr>
-<tr><td>National id:</td><td><%= @dde_person.national_patient_identifier.value rescue nil %></td></tr>
-<tr><td>Site code:</td><td><%= @dde_person.national_patient_identifier.assigner_site.code rescue nil %></td></tr>
-<tr><td>Given name:</td><td><%= @dde_person.given_name rescue nil %></td></tr>
-<tr><td>Family name:</td><td><%=@dde_person.family_name rescue nil %></td></tr>
-<tr><td>Gender:</td><td><%= @dde_person.gender rescue nil %></td></tr>
-<tr><td>Birthdate:</td><td><%= @dde_person.birthdate rescue nil %></td></tr>
-<tr><td>Birthdate Estimated:</td><td><%= @dde_person.birthdate_estimated rescue nil%></td></tr>
+<tr class=<%="mismatch" if national_id_mismatch == true %>><td>National id:</td><td><%= @dde_person.national_patient_identifier.value rescue nil %></td></tr>
+<tr class=<%="mismatch" if site_code_mismatch == true %>><td>Site code:</td><td><%= @dde_person.national_patient_identifier.assigner_site.code rescue nil %></td></tr>
+<tr class=<%= "mismatch" if given_name_mismatch == true %>><td>Given name:</td><td><%= @dde_person.given_name rescue nil %></td></tr>
+<tr class=<%= "mismatch" if family_name_mismatch == true %>><td>Family name:</td><td><%=@dde_person.family_name rescue nil %></td></tr>
+<tr class=<%= "mismatch" if gender_mismatch == true %>><td>Gender:</td><td><%= @dde_person.gender rescue nil %></td></tr>
+<tr class=<%= "mismatch" if birthdate_mismatch == true %>><td>Birthdate:</td><td><%= @dde_person.birthdate rescue nil %></td></tr>
+<tr class=<%= "mismatch" if birthdate_estimated_mismatch == true %>><td>Birthdate estimated:</td><td><%= @dde_person.birthdate_estimated rescue nil%></td></tr>
 </table>
 </div>
 <div id="dde2_person">
 <table>
 <tr><th>DDE2</th></tr>
-<tr><td>National id:</td><td><%= @dde2_person.national_id rescue nil %></td></tr>
-<tr><td>Site code:</td><td><%= @dde2_person.assigned_site rescue nil %></td></tr>
-<tr><td>Given name:</td><td><%= @dde2_person.names.given_name rescue nil %></td></tr>
-<tr><td>Family name:</td><td><%= @dde2_person.names.family_name rescue nil %></td></tr>
-<tr><td>Gender:</td><td><%= @dde2_person.gender rescue nil %></td></tr>
-<tr><td>Birthdate:</td><td><%= @dde2_person.birthdate rescue nil %></td></tr>
-<tr><td>Birthdate Estimated:</td><td><%= @dde2_person.birthdate_estimated rescue nil %></td></tr>
+<tr class=<%="mismatch" if national_id_mismatch == true %>><td>National id:</td><td><%= @dde2_person.national_id rescue nil %></td></tr>
+<tr class=<%= "mismatch" if site_code_mismatch == true %>><td>Site code:</td><td><%= @dde2_person.assigned_site rescue nil %></td></tr>
+<tr class=<%= "mismatch" if given_name_mismatch == true %>><td>Given name:</td><td><%= @dde2_person.names.given_name rescue nil %></td></tr>
+<tr class=<%= "mismatch" if family_name_mismatch == true %>><td>Family name:</td><td><%= @dde2_person.names.family_name rescue nil %></td></tr>
+<tr class=<%= "mismatch" if gender_mismatch == true %>><td>Gender:</td><td><%= @dde2_person.gender rescue nil %></td></tr>
+<tr class=<%= "mismatch" if birthdate_mismatch == true %>><td>Birthdate:</td><td><%= @dde2_person.birthdate rescue nil %></td></tr>
+<tr class=<%= "mismatch" if birthdate_estimated_mismatch == true %>><td>Birthdate estimated:</td><td><%= @dde2_person.birthdate_estimated rescue nil %></td></tr>
 </table>
 </div>
 </div>

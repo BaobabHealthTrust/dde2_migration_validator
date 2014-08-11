@@ -1,0 +1,48 @@
+<style type="text/css">
+#container {
+  background-color: beige;
+  padding: 10px;
+  margin: 10px;
+}
+
+#premigration {
+  width: 1158px;
+  background-color: beige; 
+  }
+
+.figures {
+  text-align:center; 
+  vertical-align:middle;
+  width: 50%;
+}
+
+#header {
+ width: 1168px;
+ margin-left: auto;
+ margin-right: auto;
+ background-color: beige;
+ clear: both;
+}
+
+</style>
+<div id ="container">
+<div id="header">
+<h1><%= @site_name %> Premigration Report</h1>
+</div>
+
+<div id="premigration">
+<table>
+<% colorz = cycle('white', 'black', :name => 'colors') %>
+<% @migration_stats.each do |k,v| %>
+     <tr class="<%= colorz %>">
+      <td>
+ <%= k.split("_").join(" ").humanize + ":" %>
+      </td>
+  <td class="figures">
+ <%= v.to_s %>
+      </td>
+     </tr>
+<%end%>
+</table>
+</div>
+</div> 

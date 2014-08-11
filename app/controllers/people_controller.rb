@@ -10,8 +10,13 @@ class PeopleController < ApplicationController
       #dde_person = DdeNationalPatientIdentifier.find_by_value_and_assigner_site_id(national_id,site_id).person rescue nil
       dde_person = DdeNationalPatientIdentifier.find_by_value(national_id).person rescue nil
       if !dde2_person.blank? && !dde_person.blank?
+
+       
+      
        @dde2_person = dde2_person
-       @dde_person = dde_person  
+       @dde_person = dde_person
+      elsif dde_person.blank? and dde_person.blank?  
+        @error = "#{national_id} does not exist both in DDE and DDE2"
       elsif dde2_person.blank?
         @dde_person = dde_person
         @error = "DDE2 does not have a person with a national id of : #{national_id}"

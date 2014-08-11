@@ -85,9 +85,27 @@
 <p><%= @error %></p>
 </div>
 <div id="dde_person">
-<p><%= @dde_person.to_yaml %></p>
+<table>
+<tr><th>DDE</th></tr>
+<tr><td>National id:</td><td><%= @dde_person.national_patient_identifier.value rescue nil %></td></tr>
+<tr><td>Site code:</td><td><%= @dde_person.national_patient_identifier.assigner_site.code rescue nil %></td></tr>
+<tr><td>Given name:</td><td><%= @dde_person.given_name rescue nil %></td></tr>
+<tr><td>Family name:</td><td><%=@dde_person.family_name rescue nil %></td></tr>
+<tr><td>Gender:</td><td><%= @dde_person.gender rescue nil %></td></tr>
+<tr><td>Birthdate:</td><td><%= @dde_person.birthdate rescue nil %></td></tr>
+<tr><td>Birthdate Estimated:</td><td><%= @dde_person.birthdate_estimated rescue nil%></td></tr>
+</table>
 </div>
 <div id="dde2_person">
-<p><%= @dde2_person.to_yaml %></p>
+<table>
+<tr><th>DDE2</th></tr>
+<tr><td>National id:</td><td><%= @dde2_person.national_id rescue nil %></td></tr>
+<tr><td>Site code:</td><td><%= @dde2_person.assigned_site rescue nil %></td></tr>
+<tr><td>Given name:</td><td><%= @dde2_person.names.given_name rescue nil %></td></tr>
+<tr><td>Family name:</td><td><%= @dde2_person.names.family_name rescue nil %></td></tr>
+<tr><td>Gender:</td><td><%= @dde2_person.gender rescue nil %></td></tr>
+<tr><td>Birthdate:</td><td><%= @dde2_person.birthdate rescue nil %></td></tr>
+<tr><td>Birthdate Estimated:</td><td><%= @dde2_person.birthdate_estimated rescue nil %></td></tr>
+</table>
 </div>
 </div> 

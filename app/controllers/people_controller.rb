@@ -10,7 +10,6 @@ class PeopleController < ApplicationController
 		end
 
     @dde_people_count = line_num
-    raise @dde_people_count.inspect
     national_id = params[:npid]
     site_id = DdeSite.find_by_code(CONFIG['site_code']).id
     unless national_id.blank?

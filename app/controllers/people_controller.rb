@@ -1,7 +1,16 @@
 class PeopleController < ApplicationController
   def index
-    @people_count = Person.count 
+    @dde2_people_count = Person.count
     
+    line_num=0
+		text=File.open(Rails.root.join('log','site_log.log')).read
+		text.gsub!(/\r\n?/, "\n")
+		text.each_line do |line|
+			line_num += 1
+		end
+
+    @dde_people_count = line_num
+    raise @dde_people_count.inspect
     national_id = params[:npid]
     site_id = DdeSite.find_by_code(CONFIG['site_code']).id
     unless national_id.blank?

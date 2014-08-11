@@ -3,36 +3,37 @@
 #counter {
   width: 500px;
   height: 250px;
-  border: 1px dotted red;
-  background-color: brown;
+  background-color: beige;
   float: left; 
   }
-
+#container {
+  background-color: beige;
+  padding: 10px;
+  margin: 10px;
+}
 #searchbox {
   width: 500px;
   height: 250px;
-  border: 1px dotted red;
-  background-color: teal;
+  background-color: beige;
   float: right; 
   }
 
 #error_message{
-  width: 1196px;
+  width: 168px;
   height: 40px;
   margin-left: auto;
   margin-right:auto;
-  border: 1px dotted red;
-  background-color: tomato;
+  color: red;
+  background-color: beige;
   clear: both;
  }
 
 #search_results {
- width: 1200px;
+ width: 1168px;
  height: 400px;
  margin-left: auto;
  margin-right: auto;
- border: 1px dotted red;
- background-color: blue;
+ background-color: beige;
  clear: both;
 
 }
@@ -40,30 +41,28 @@
 #dde_person {
   width: 500px;
   height: 358px;
-  border: 1px dotted red;
-  background-color: green;
+  background-color: beige;
   float: left; 
   }
 
 #dde2_person {
   width: 500px;
   height: 358px;
-  border: 1px dotted red;
-  background-color: purple;
+  background-color: beige;
   float: right; 
   }
 
 #header {
- width: 1198px;
+ width: 1168px;
  margin-left: auto;
  margin-right: auto;
- border: 1px dotted red;
  background-color: beige;
  clear: both;
 
 }
 
 </style>
+<div id ="container">
 <div id="header">
 <h1>DDE to DDE2 Migration Validator</h1>
 </div>
@@ -107,5 +106,6 @@
 <tr><td>Birthdate:</td><td><%= @dde2_person.birthdate rescue nil %></td></tr>
 <tr><td>Birthdate Estimated:</td><td><%= @dde2_person.birthdate_estimated rescue nil %></td></tr>
 </table>
+</div>
 </div>
 </div> 

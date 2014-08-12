@@ -98,7 +98,7 @@ class PeopleController < ApplicationController
 			@migration_stats["total_number_of_patients_with_null_birthdates"] = @total_number_of_patients_with_null_birthdates
 			@total_number_of_patients_with_null_birthdates_on_site = DdePerson.where("birthdate IS NULL AND creator_site_id = #{site_id}").count
 			@migration_stats["total_number_of_patients_with_null_birthdates_on_site"] = @total_number_of_patients_with_null_birthdates_on_site
-			
+=begin			
 			@total_patients_without_npids = DdeNationalPatientIdentifier.find_by_sql("SELECT p.id FROM people p LEFT JOIN national_patient_identifiers n
 			ON p.id = n.person_id
 			WHERE n.person_id IS NULL").count
@@ -109,6 +109,6 @@ class PeopleController < ApplicationController
 			WHERE n.person_id IS NULL AND p.creator_site_id = #{site_id}").count
 
 			@migration_stats["total_patients_without_npids_on_site"] = @total_patients_without_npids_on_site
-
+=end
   end
 end

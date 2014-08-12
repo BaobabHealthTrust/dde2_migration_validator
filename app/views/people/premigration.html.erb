@@ -24,6 +24,18 @@
  clear: both;
 }
 
+.odd {
+ background-color: #FF9999;
+}
+
+.even {
+ background-color: #FFCCCC;
+}
+
+table {
+ border-collapse: collapse;
+ width: 1158px;
+}
 </style>
 <div id ="container">
 <div id="header">
@@ -32,9 +44,8 @@
 
 <div id="premigration">
 <table>
-<% colorz = cycle('white', 'black', :name => 'colors') %>
 <% @migration_stats.each do |k,v| %>
-     <tr class="<%= colorz %>">
+     <tr class="<%= cycle('even', 'odd') %>">
       <td>
  <%= k.split("_").join(" ").humanize + ":" %>
       </td>

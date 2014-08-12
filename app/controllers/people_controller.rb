@@ -46,13 +46,13 @@ class PeopleController < ApplicationController
 @migration_stats = Hash.new
 
 @total_number_national_ids = DdeNationalPatientIdentifier.count
-@migration_stats["total_number_national_ids"] = @total_number_national_ids
+@migration_stats["total_number_of_national_ids"] = @total_number_national_ids
 @total_number_national_ids_allocated_to_site =  DdeNationalPatientIdentifier.where(assigner_site_id: site_id).count
-@migration_stats["total_number_national_ids_allocated_to_site"] = @total_number_national_ids_allocated_to_site
+@migration_stats["total_number_of_national_ids_allocated_to_site"] = @total_number_national_ids_allocated_to_site
 @total_number_national_ids_assigned_to_people = DdeNationalPatientIdentifier.where("person_id is not null").count
-@migration_stats["total_number_national_ids_assigned_to_people"] = @total_number_national_ids_assigned_to_people
+@migration_stats["total_number_of_national_ids_assigned_to_people"] = @total_number_national_ids_assigned_to_people
 @total_number_national_ids_assigned_to_people_on_site = DdeNationalPatientIdentifier.where("person_id is not null and assigner_site_id = #{site_id}").count
-@migration_stats["total_number_national_ids_assigned_to_people_on_site"] = @total_number_national_ids_assigned_to_people_on_site
+@migration_stats["total_number_of_national_ids_assigned_to_people_on_site"] = @total_number_national_ids_assigned_to_people_on_site
 
 
 @total_number_of_people_created = DdePerson.count

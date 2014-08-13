@@ -59,10 +59,22 @@ class PeopleController < ApplicationController
 			@total_number_of_duplicate_npids_on_site_unassigned = DdeNationalPatientIdentifier.find_by_sql("SELECT value FROM national_patient_identifiers WHERE assigner_site_id = #{site_id} AND person_id IS NULL GROUP BY value HAVING COUNT(value) > 1").count
 			@migration_stats["total_number_of_duplicate_npids_on_site_unassigned"] = @total_number_of_duplicate_npids_on_site_unassigned
        
-      @total_assigned_npids_with_no_patient_record = DdeNationalPatientIdentifier.where("assigned_at IS NOT NULL AND person_id IS NULL").count
+      @total_assigned_npids_with_no_patient_record = DdeNationalPatientIdentifier.where("assigned_at IS NOT NULL AND person_id IS NULL AND voided = 0").count
 			@migration_stats["total_assigned_npids_with_no_patient_record"] = @total_assigned_npids_with_no_patient_record
-			@total_assigned_npids_with_no_patient_record_on_site = DdeNationalPatientIdentifier.where("assigned_at IS NOT NULL AND person_id IS NULL AND assigner_site_id = #{site_id}").count
+			@total_assigned_npids_with_no_patient_record_on_site = DdeNationalPatientIdentifier.where("assigned_at IS NOT NULL AND person_id IS NULL AND assigner_site_id = #{site_id} AND voided = 0").count
 			@migration_stats["total_assigned_npids_with_no_patient_record_on_site"] = @total_assigned_npids_with_no_patient_record_on_site
+
+      @total_voided_npids = DdeNationalPatientIdentifier.where("voided = 1").count
+			@migration_stats["total_voided_npids"] = @total_voided_npids
+			@total_voided_npids_on_site = DdeNationalPatientIdentifier.where("assigner_site_id = #{site_id} AND voided = 0").count
+			@migration_stats["total_voided_npids_on_site"] = @total_voided_npids_on_site
+
+      @total_voided_but_assigned_npids = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND voided = 1").count
+			@migration_stats["total_voided_but_assigned_npids"] = @total_voided_but_assigned_npids
+			@total_voided_but_assigned_npids_on_site = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND assigner_site_id = #{site_id} AND voided = 0").count
+			@migration_stats["total_voided_but_assigned_npids_on_site"] = @total_voided_but_assigned_npids_on_site
+
+      #Patients
 
 			@total_number_of_patients_created = DdePerson.count
 			@migration_stats["total_number_of_patients_created"] = @total_number_of_patients_created
@@ -110,5 +122,6 @@ class PeopleController < ApplicationController
 
 			@migration_stats["total_patients_without_npids_on_site"] = @total_patients_without_npids_on_site
 =end
+
   end
 end

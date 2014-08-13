@@ -84,14 +84,15 @@ class PeopleController < ApplicationController
 			@migration_stats["total_number_of_patients_created_from_other_site"] = @total_number_of_patients_created_from_other_site
 			@total_number_of_male_patients = DdePerson.where(gender: "M").count
 			@migration_stats["total_number_of_male_patients"] = @total_number_of_male_patients
+      @total_number_of_male_patients_on_site = DdePerson.where(creator_site_id: site_id,gender: "M").count rescue 0
+			@migration_stats["total_number_of_male_patients_on_site"] = @total_number_of_male_patients_on_site
 			@total_number_of_female_patients = DdePerson.where(gender: "F").count
 			@migration_stats["total_number_of_female_patients"] = @total_number_of_female_patients
-			@total_number_of_patients_without_gender = DdePerson.where("gender is null").count rescue 0
-			@migration_stats["total_number_of_patients_without_gender"] = @total_number_of_patients_without_gender
-			@total_number_of_male_patients_on_site = DdePerson.where(creator_site_id: site_id,gender: "M").count rescue 0
-			@migration_stats["total_number_of_male_patients_on_site"] = @total_number_of_male_patients_on_site
+			
 			@total_number_of_female_patients_on_site = DdePerson.where(creator_site_id: site_id,gender: "F").count rescue 0
 			@migration_stats["total_number_of_female_patients_on_site"] =  @total_number_of_female_patients_on_site
+      @total_number_of_patients_without_gender = DdePerson.where("gender is null").count rescue 0
+			@migration_stats["total_number_of_patients_without_gender"] = @total_number_of_patients_without_gender
 
 			@total_number_of_patients_with_null_first_names = DdePerson.where("given_name IS NULL").count
 			@migration_stats["total_number_of_patients_with_null_first_names"] = @total_number_of_patients_with_null_first_names

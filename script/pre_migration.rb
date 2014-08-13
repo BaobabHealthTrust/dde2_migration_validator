@@ -111,8 +111,7 @@ site = DdeSite.where(code: CONFIG['site_code']).first
 
 			@migration_stats["total_patients_without_npids_on_site"] = @total_patients_without_npids_on_site
 =end
-
-migration_stats.each do |k,v|
+@migration_stats.each do |k,v|
  puts k.to_s + " : " +  v.to_s
 end
 puts "Started at: #{start.strftime("%Y-%m-%d %H:%M:%S")} ########## finished at:#{Time.now().strftime("%Y-%m-%d %H:%M:%S")}"

@@ -66,12 +66,12 @@ class PeopleController < ApplicationController
 
       @total_voided_npids = DdeNationalPatientIdentifier.where("voided = 1").count
 			@migration_stats["total_voided_npids"] = @total_voided_npids
-			@total_voided_npids_on_site = DdeNationalPatientIdentifier.where("assigner_site_id = #{site_id} AND voided = 0").count
+			@total_voided_npids_on_site = DdeNationalPatientIdentifier.where("assigner_site_id = #{site_id} AND voided = 1").count
 			@migration_stats["total_voided_npids_on_site"] = @total_voided_npids_on_site
 
       @total_voided_but_assigned_npids = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND voided = 1").count
 			@migration_stats["total_voided_but_assigned_npids"] = @total_voided_but_assigned_npids
-			@total_voided_but_assigned_npids_on_site = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND assigner_site_id = #{site_id} AND voided = 0").count
+			@total_voided_but_assigned_npids_on_site = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND assigner_site_id = #{site_id} AND voided = 1").count
 			@migration_stats["total_voided_but_assigned_npids_on_site"] = @total_voided_but_assigned_npids_on_site
 
       #Patients

@@ -114,18 +114,15 @@ class PeopleController < ApplicationController
 			@migration_stats["total_number_of_patients_with_null_birthdates"] = @total_number_of_patients_with_null_birthdates
 			@total_number_of_patients_with_null_birthdates_on_site = DdePerson.where("birthdate IS NULL AND creator_site_id = #{site_id}").count
 			@migration_stats["total_number_of_patients_with_null_birthdates_on_site"] = @total_number_of_patients_with_null_birthdates_on_site
-=begin			
-			@total_patients_without_npids = DdeNationalPatientIdentifier.find_by_sql("SELECT p.id FROM people p LEFT JOIN national_patient_identifiers n
-			ON p.id = n.person_id
-			WHERE n.person_id IS NULL").count
-			@migration_stats["total_patients_without_npids"] = @total_patients_without_npids
+			
+			@npids = DdeNationalPatientIdentifier.where("person_id IS NOT NULL").collect{|person| person.person_id.to_i }
+      @people = DdePerson.all.collect{|person| person.id }
+			@migration_stats["total_patients_without_npids"] = @people - @npids
 
-			@total_patients_without_npids_on_site = DdeNationalPatientIdentifier.find_by_sql("SELECT p.id FROM people p LEFT JOIN national_patient_identifiers n
-			ON p.id = n.person_id
-			WHERE n.person_id IS NULL AND p.creator_site_id = #{site_id}").count
+			@npids_on_site = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND assigner_site_id = #{site_id}").collect{|person| person.person_id.to_i }
+      @people = DdePerson.where("creator_site_id = #{site_id}").collect{|person| person.id }
 
-			@migration_stats["total_patients_without_npids_on_site"] = @total_patients_without_npids_on_site
-=end
+			@migration_stats["total_patients_without_npids_on_site"] = @people_on_site - @npids_on_site
 
   end
 

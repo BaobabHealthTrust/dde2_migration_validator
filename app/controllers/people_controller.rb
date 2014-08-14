@@ -115,12 +115,12 @@ class PeopleController < ApplicationController
 			@total_number_of_patients_with_null_birthdates_on_site = DdePerson.where("birthdate IS NULL AND creator_site_id = #{site_id}").count
 			@migration_stats["total_number_of_patients_with_null_birthdates_on_site"] = @total_number_of_patients_with_null_birthdates_on_site
 			
-			@npids = DdeNationalPatientIdentifier.where("person_id IS NOT NULL").collect{|person| person.person_id.to_i }
+			@npids = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND voided = 0").collect{|person| person.person_id.to_i }
       @people = DdePerson.all.collect{|person| person.id }
       @total_patients_without_npids = @people - @npids
 			@migration_stats["total_patients_without_npids"] =  @total_patients_without_npids.length
 
-			@npids_on_site = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND assigner_site_id = #{site_id}").collect{|person| person.person_id.to_i }
+			@npids_on_site = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND assigner_site_id = #{site_id} AND voided = 0").collect{|person| person.person_id.to_i }
       @people_on_site = DdePerson.where("creator_site_id = #{site_id}").collect{|person| person.id }
       @total_patients_without_npids_on_site = @people_on_site - @npids_on_site
 			@migration_stats["total_patients_without_npids_on_site"] = @total_patients_without_npids_on_site.length

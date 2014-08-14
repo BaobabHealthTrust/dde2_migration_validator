@@ -106,6 +106,8 @@ class Npid < CouchRest::Model::Base
         view :by__id
         view :by_national_id
         view :by_site_code
+        view :by_site_code_and_assigned
+        view :by_assigned
     
         # Site views
         view :unassigned_to_site,

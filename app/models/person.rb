@@ -4,8 +4,6 @@ class Person < CouchRest::Model::Base
 
   use_database "person"
 
-  #before_save :set_name_codes
-
   def national_id
     self['_id']
   end
@@ -62,6 +60,9 @@ class Person < CouchRest::Model::Base
   design do
     view :by__id
     view :by_old_identification_number
+    view :by_patient_assigned_and_assigned_site
+    view :by_gender
+    view :by_gender_and_assigned_site 
   end
 
   design do

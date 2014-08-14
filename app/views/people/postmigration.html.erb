@@ -5,7 +5,7 @@
   margin: 10px;
 }
 
-#premigration {
+#postmigration {
   width: 1158px;
   background-color: beige; 
   }
@@ -39,10 +39,10 @@ table {
 </style>
 <div id ="container">
 <div id="header">
-<h1><%= @site_name %> Pre-migration Report</h1>
+<h1><%= @site_name %> Post-migration Report</h1>
 </div>
 
-<div id="premigration">
+<div id="postmigration">
 <table>
 <% @migration_stats.each do |k,v| %>
      <tr class="<%= cycle('even', 'odd') %>">
@@ -55,6 +55,7 @@ table {
      </tr>
 <%end%>
 </table>
+<p><%= link_to "Pre-migration Report", "/people/premigration" %></p>
 <p><%= link_to "Migration Validator", "/people/index" %></p>
 </div>
 </div> 

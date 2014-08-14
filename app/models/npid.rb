@@ -37,6 +37,8 @@ class Npid < CouchRest::Model::Base
         
         ((params[:start].to_i)..(npids.length - 1)).each do |i|
            
+          npids[i]["value"] = Npid.find_by__id(npids[i].id) rescue {}
+          
           person = Person.find_by__id(npids[i]["value"]["national_id"]) rescue nil
           
           result << {
@@ -75,6 +77,8 @@ class Npid < CouchRest::Model::Base
         
         ((params[:start].to_i)..(params[:start].to_i + params[:limit].to_i - 1)).each do |i|
            
+          npids[i]["value"] = Npid.find_by__id(npids[i].id) rescue {}
+          
           person = Person.find_by__id(npids[i]["value"]["national_id"]) rescue nil
           
           result << {

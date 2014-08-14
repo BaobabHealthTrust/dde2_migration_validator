@@ -116,24 +116,6 @@ class Npid < CouchRest::Model::Base
                       emit(doc.national_id, null);
                 }
               }"
-        view :unassigned_at_site,
-             :map => "function(doc){
-                if (doc['type'] == 'Npid' && doc['site_code'] == 'KCH' && !doc.assigned ){
-                  emit(doc.national_id, null);
-                }
-              }"
-        view :assigned_at_site,
-             :map => "function(doc){
-                if (doc['type'] == 'Npid' && doc['site_code'] == 'KCH' && doc.assigned ){
-                  emit(doc.national_id, null);
-                }
-              }"
-        view :assigned_to_site,
-             :map => "function(doc){
-                if (doc['type'] == 'Npid' && doc['site_code'] == 'KCH' ){
-                  emit(doc.national_id, null);
-                }
-              }"
               
         # Current Region views    
         view :unassigned_to_region,
@@ -248,6 +230,4 @@ class Npid < CouchRest::Model::Base
     
   end
   
-  
-
 end

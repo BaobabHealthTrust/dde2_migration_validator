@@ -1,5 +1,8 @@
 class PeopleController < ApplicationController
   def index
+    site = DdeSite.where(code: CONFIG['site_code']).first
+   	site_id = site.id
+  	@site_name = site.name
     @dde2_people_count = Person.count   
     line_num=0
 		text=File.open(Rails.root.join('log','site_log.log')).read

@@ -117,12 +117,13 @@ class PeopleController < ApplicationController
 			
 			@npids = DdeNationalPatientIdentifier.where("person_id IS NOT NULL").collect{|person| person.person_id.to_i }
       @people = DdePerson.all.collect{|person| person.id }
-			@migration_stats["total_patients_without_npids"] = @people - @npids
+       = @people - @npids
+			@migration_stats["total_patients_without_npids"] =  @total_patients_without_npids.length
 
 			@npids_on_site = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND assigner_site_id = #{site_id}").collect{|person| person.person_id.to_i }
       @people_on_site = DdePerson.where("creator_site_id = #{site_id}").collect{|person| person.id }
-
-			@migration_stats["total_patients_without_npids_on_site"] = @people_on_site - @npids_on_site
+      @total_patients_without_npids_on_site = @people_on_site - @npids_on_site
+			@migration_stats["total_patients_without_npids_on_site"] = @total_patients_without_npids_on_site.length
 
   end
 

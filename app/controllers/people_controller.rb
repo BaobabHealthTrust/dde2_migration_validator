@@ -101,7 +101,7 @@ class PeopleController < ApplicationController
 			@migration_stats["total_number_of_patients_with_null_first_names"] = @total_number_of_patients_with_null_first_names
 			@total_number_of_patients_with_null_last_names = DdePerson.where("family_name IS NULL or family_name = ''").count
 			@migration_stats["total_number_of_patients_with_null_last_names"] = @total_number_of_patients_with_null_last_names
-			@total_number_of_patients_with_null_names = DdePerson.where("(given_name IS NULL or given_name = '') AND (family_name IS NULL or family_name = ''").count
+			@total_number_of_patients_with_null_names = DdePerson.where("(given_name IS NULL or given_name = '') AND (family_name IS NULL or family_name = '')").count
 			@migration_stats["total_number_of_patients_with_null_names"] = @total_number_of_patients_with_null_names 
 			@total_number_of_patients_with_null_first_names_on_site = DdePerson.where("(given_name IS NULL OR given_name = '') AND creator_site_id = #{site_id}").count
 			@migration_stats["total_number_of_patients_with_null_first_names_on_site"] = @total_number_of_patients_with_null_first_names_on_site

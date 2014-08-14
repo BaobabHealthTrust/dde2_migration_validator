@@ -94,25 +94,25 @@ class PeopleController < ApplicationController
 			
 			@total_number_of_female_patients_on_site = DdePerson.where(creator_site_id: site_id,gender: "F").count rescue 0
 			@migration_stats["total_number_of_female_patients_on_site"] =  @total_number_of_female_patients_on_site
-      @total_number_of_patients_without_gender = DdePerson.where("gender is null").count rescue 0
+      @total_number_of_patients_without_gender = DdePerson.where("gender is null or gender = ''").count rescue 0
 			@migration_stats["total_number_of_patients_without_gender"] = @total_number_of_patients_without_gender
 
-			@total_number_of_patients_with_null_first_names = DdePerson.where("given_name IS NULL").count
+			@total_number_of_patients_with_null_first_names = DdePerson.where("given_name IS NULL or given_name = ''").count
 			@migration_stats["total_number_of_patients_with_null_first_names"] = @total_number_of_patients_with_null_first_names
-			@total_number_of_patients_with_null_last_names = DdePerson.where("family_name IS NULL").count
+			@total_number_of_patients_with_null_last_names = DdePerson.where("family_name IS NULL or family_name = ''").count
 			@migration_stats["total_number_of_patients_with_null_last_names"] = @total_number_of_patients_with_null_last_names
-			@total_number_of_patients_with_null_names = DdePerson.where("given_name IS NULL AND family_name IS NULL").count
+			@total_number_of_patients_with_null_names = DdePerson.where("(given_name IS NULL or given_name = '') AND (family_name IS NULL or family_name = ''").count
 			@migration_stats["total_number_of_patients_with_null_names"] = @total_number_of_patients_with_null_names 
-			@total_number_of_patients_with_null_first_names_on_site = DdePerson.where("given_name IS NULL AND creator_site_id = #{site_id}").count
+			@total_number_of_patients_with_null_first_names_on_site = DdePerson.where("(given_name IS NULL OR given_name = '') AND creator_site_id = #{site_id}").count
 			@migration_stats["total_number_of_patients_with_null_first_names_on_site"] = @total_number_of_patients_with_null_first_names_on_site
-			@total_number_of_patients_with_null_last_names_on_site = DdePerson.where("family_name IS NULL AND creator_site_id = #{site_id}").count
+			@total_number_of_patients_with_null_last_names_on_site = DdePerson.where("(family_name IS NULL or family_name ='') AND creator_site_id = #{site_id}").count
 			@migration_stats["total_number_of_patients_with_null_last_names_on_site"] = @total_number_of_patients_with_null_last_names_on_site
-			@total_number_of_patients_with_null_names_on_site = DdePerson.where("given_name IS NULL AND family_name IS NULL AND creator_site_id = #{site_id}").count
+			@total_number_of_patients_with_null_names_on_site = DdePerson.where("(given_name IS NULL  or given_name = '') AND family_name IS NULL AND creator_site_id = #{site_id}").count
 			@migration_stats["total_number_of_patients_with_null_names_on_site"] = @total_number_of_patients_with_null_names_on_site
 
-			@total_number_of_patients_with_null_birthdates = DdePerson.where("birthdate IS NULL").count
+			@total_number_of_patients_with_null_birthdates = DdePerson.where("birthdate IS NULL or birthdate = ''").count
 			@migration_stats["total_number_of_patients_with_null_birthdates"] = @total_number_of_patients_with_null_birthdates
-			@total_number_of_patients_with_null_birthdates_on_site = DdePerson.where("birthdate IS NULL AND creator_site_id = #{site_id}").count
+			@total_number_of_patients_with_null_birthdates_on_site = DdePerson.where("(birthdate IS NULL OR birthdate = '') AND creator_site_id = #{site_id}").count
 			@migration_stats["total_number_of_patients_with_null_birthdates_on_site"] = @total_number_of_patients_with_null_birthdates_on_site
 			
 			@npids = DdeNationalPatientIdentifier.where("person_id IS NOT NULL AND voided = 0").collect{|person| person.person_id.to_i }

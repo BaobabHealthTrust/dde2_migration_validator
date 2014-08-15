@@ -60,7 +60,7 @@ class Person < CouchRest::Model::Base
   design do
     view :by__id
     view :by_old_identification_number
-    view :by_patient_assigned_and_assigned_site
+    view :by_assigned_site
     view :by_gender
     view :by_gender_and_assigned_site 
   end

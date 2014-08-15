@@ -124,12 +124,6 @@ class Person < CouchRest::Model::Base
 		          }		          
 	          }
           }"
-    view :by_assigned_site,
-         :map => "function(doc){
-            if (doc['type'] == 'Person' ){
-              emit([doc._id, doc.assigned_site], null);
-            }
-          }"
     
   end
 

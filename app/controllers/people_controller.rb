@@ -147,16 +147,13 @@ class PeopleController < ApplicationController
 			@total_number_npids_assigned_to_patients_on_site = Npid.by_site_code_and_assigned.keys([[site.code,true]]).rows.count
 
       @migration_stats["total_number_of_npids_assigned_to_patients_on_site"] = @total_number_npids_assigned_to_patients_on_site
-      puts "Counting ::: " + @migration_stats.to_a.last.first.split("_").join(" ").humanize
-      @total_assigned_npids_with_no_patient_record_on_site = DdeNationalPatientIdentifier.where("assigned_at IS NOT NULL AND person_id IS NULL AND assigner_site_id = #{site_id} AND voided = 0").count
-			@migration_stats["total_assigned_npids_with_no_patient_record_on_site"] = @total_assigned_npids_with_no_patient_record_on_site
-      puts "Counting ::: " + @migration_stats.to_a.last.first.split("_").join(" ").humanize
-
+     
+  
       #Patients
   
 			@total_number_of_patients_created = Person.count
 			@migration_stats["total_number_of_patients_created"] = @total_number_of_patients_created    
-      @total_number_of_patients_created_on_site = Person.by_patient_assigned_and_assigned_site.keys([[true,site.code]]).rows.count
+      @total_number_of_patients_created_on_site = Person.by_assigned_site.keys([site.code]).rows.count
 			@migration_stats["total_number_of_patients_created_on_site"] = @total_number_of_patients_created_on_site
       @total_number_of_patients_created_from_other_site = @total_number_of_patients_created - @total_number_of_patients_created_on_site
 			@migration_stats["total_number_of_patients_created_from_other_site"] = @total_number_of_patients_created_from_other_site

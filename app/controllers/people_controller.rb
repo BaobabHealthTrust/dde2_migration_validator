@@ -127,8 +127,6 @@ class PeopleController < ApplicationController
 
   end
 
-  
-
   def postmigration
       site = DdeSite.where(code: CONFIG['site_code']).first
    		site_id = site.id
@@ -136,19 +134,14 @@ class PeopleController < ApplicationController
 			@migration_stats = Hash.new
       #NPIDS
 			@total_number_npids = Npid.count
-			@migration_stats["total_number_of_npids"] = @total_number_npids
-      
+			@migration_stats["total_number_of_npids"] = @total_number_npids 
 			@total_number_npids_allocated_to_site =  Npid.by_site_code.keys([site.code]).rows.count
 			@migration_stats["total_number_of_npids_allocated_to_site"] = @total_number_npids_allocated_to_site
-      
 			@total_number_npids_assigned_to_patients = Npid.by_assigned.keys([true]).rows.count
 			@migration_stats["total_number_of_npids_assigned_to_patients"] = @total_number_npids_assigned_to_patients
-      
 			@total_number_npids_assigned_to_patients_on_site = Npid.by_site_code_and_assigned.keys([[site.code,true]]).rows.count
-
       @migration_stats["total_number_of_npids_assigned_to_patients_on_site"] = @total_number_npids_assigned_to_patients_on_site
      
-  
       #Patients
   
 			@total_number_of_patients_created = Person.count
@@ -167,44 +160,8 @@ class PeopleController < ApplicationController
 			@migration_stats["total_number_of_female_patients_on_site"] =  @total_number_of_female_patients_on_site
       @total_number_of_patients_without_gender = Person.by_gender.keys([""]).rows.count
 			@migration_stats["total_number_of_patients_without_gender"] = @total_number_of_patients_without_gender
+      @total_number_of_patients_without_gender_on_site = Person.by_gender_and_assigned_site.keys([["",site.code]]).rows.count
+			@migration_stats["total_number_of_patients_without_gender_on_site"] = @total_number_of_patients_without_gender_on_site
       
-=begin
-			@total_number_of_patients_with_null_first_names = DdePerson.where("given_name IS NULL").count
-			@migration_stats["total_number_of_patients_with_null_first_names"] = @total_number_of_patients_with_null_first_names
-			puts "Counting ::: " + @migration_stats.to_a.last.first.split("_").join(" ").humanize
-
-      @total_number_of_patients_with_null_last_names = DdePerson.where("family_name IS NULL").count
-			@migration_stats["total_number_of_patients_with_null_last_names"] = @total_number_of_patients_with_null_last_names
-			puts "Counting ::: " + @migration_stats.to_a.last.first.split("_").join(" ").humanize
-      @total_number_of_patients_with_null_names = DdePerson.where("given_name IS NULL AND family_name IS NULL").count
-			@migration_stats["total_number_of_patients_with_null_names"] = @total_number_of_patients_with_null_names 
-			puts "Counting ::: " + @migration_stats.to_a.last.first.split("_").join(" ").humanize
-      @total_number_of_patients_with_null_first_names_on_site = DdePerson.where("given_name IS NULL AND creator_site_id = #{site_id}").count
-			@migration_stats["total_number_of_patients_with_null_first_names_on_site"] = @total_number_of_patients_with_null_first_names_on_site
-			puts "Counting ::: " + @migration_stats.to_a.last.first.split("_").join(" ").humanize
-      @total_number_of_patients_with_null_last_names_on_site = DdePerson.where("family_name IS NULL AND creator_site_id = #{site_id}").count
-			@migration_stats["total_number_of_patients_with_null_last_names_on_site"] = @total_number_of_patients_with_null_last_names_on_site
-			puts "Counting ::: " + @migration_stats.to_a.last.first.split("_").join(" ").humanize
-     @total_number_of_patients_with_null_names_on_site = DdePerson.where("given_name IS NULL AND family_name IS NULL AND creator_site_id = #{site_id}").count
-			@migration_stats["total_number_of_patients_with_null_names_on_site"] = @total_number_of_patients_with_null_names_on_site
-      puts "Counting ::: " + @migration_stats.to_a.last.first.split("_").join(" ").humanize
-			@total_number_of_patients_with_null_birthdates = DdePerson.where("birthdate IS NULL").count
-			@migration_stats["total_number_of_patients_with_null_birthdates"] = @total_number_of_patients_with_null_birthdates
-			puts "Counting ::: " + @migration_stats.to_a.last.first.split("_").join(" ").humanize
-      @total_number_of_patients_with_null_birthdates_on_site = DdePerson.where("birthdate IS NULL AND creator_site_id = #{site_id}").count
-			@migration_stats["total_number_of_patients_with_null_birthdates_on_site"] = @total_number_of_patients_with_null_birthdates_on_site
-      puts "Counting ::: " + @migration_stats.to_a.last.first.split("_").join(" ").humanize
-=begin			
-			@total_patients_without_npids = DdeNationalPatientIdentifier.find_by_sql("SELECT p.id FROM people p LEFT JOIN national_patient_identifiers n
-			ON p.id = n.person_id
-			WHERE n.person_id IS NULL").count
-			@migration_stats["total_patients_without_npids"] = @total_patients_without_npids
-
-			@total_patients_without_npids_on_site = DdeNationalPatientIdentifier.find_by_sql("SELECT p.id FROM people p LEFT JOIN national_patient_identifiers n
-			ON p.id = n.person_id
-			WHERE n.person_id IS NULL AND p.creator_site_id = #{site_id}").count
-
-			@migration_stats["total_patients_without_npids_on_site"] = @total_patients_without_npids_on_site
-=end
   end
 end

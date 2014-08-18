@@ -1,18 +1,16 @@
 default: &default
   mode:    proxy        # allowed: master|proxy
-  site_code: MLS         # ID of the site this service is runnig on.
+  site_code: MTA         # ID of the site this service is runnig on.
+  sites: MTA
 
 production:
   <<: *default
   mode: proxy
-  site_code: MLS
+  site_code: MTA
+  sites: MTA
 
 development:
   <<: *default
   mode: proxy
-  site_code: MLS
-
-integration:
-  mode: master
-  site_code: MLS
-  
+  site_code: A18
+  sites: A18

@@ -128,40 +128,82 @@ class PeopleController < ApplicationController
   end
 
   def postmigration
-      site = DdeSite.where(code: CONFIG['site_code']).first
+   
+      @migration_stats_multiple = []
+      @total_number_npids = []
+			@total_number_npids_allocated_to_site = []
+			@total_number_npids_assigned_to_patients = []
+			@total_number_npids_assigned_to_patients_on_site = []
+     
+      #Patients
+			@total_number_of_patients_created = []
+      @total_number_of_patients_created_on_site = []
+      @total_number_of_patients_created_from_other_site = []
+      @total_number_of_male_patients = []
+      @total_number_of_male_patients_on_site = []
+      @total_number_of_female_patients = []
+			@total_number_of_female_patients_on_site = []
+      @total_number_of_patients_without_gender = []
+      @total_number_of_patients_without_gender_on_site = []
+
+      @sites = CONFIG['sites'].split
+      @sites_count = @sites.length
+		  @migration_stats = Hash.new
+      @sites.each do |site_m|
+      site = DdeSite.where(code: site_m).first
    		site_id = site.id
   	  @site_name = site.name
-			@migration_stats = Hash.new
       #NPIDS
-			@total_number_npids = Npid.count
-			@migration_stats["total_number_of_npids"] = @total_number_npids 
-			@total_number_npids_allocated_to_site =  Npid.by_site_code.keys([site.code]).rows.count
+			
+      @total_number_npids << Npid.count
+			@migration_stats["total_number_of_npids"] = @total_number_npids
+			@total_number_npids_allocated_to_site <<  Npid.by_site_code.keys([site.code]).rows.count
 			@migration_stats["total_number_of_npids_allocated_to_site"] = @total_number_npids_allocated_to_site
-			@total_number_npids_assigned_to_patients = Npid.by_assigned.keys([true]).rows.count
+			@total_number_npids_assigned_to_patients << Npid.by_assigned.keys([true]).rows.count
 			@migration_stats["total_number_of_npids_assigned_to_patients"] = @total_number_npids_assigned_to_patients
-			@total_number_npids_assigned_to_patients_on_site = Npid.by_site_code_and_assigned.keys([[site.code,true]]).rows.count
+			@total_number_npids_assigned_to_patients_on_site << Npid.by_site_code_and_assigned.keys([[site.code,true]]).rows.count
       @migration_stats["total_number_of_npids_assigned_to_patients_on_site"] = @total_number_npids_assigned_to_patients_on_site
      
       #Patients
   
-			@total_number_of_patients_created = Person.count
+			@total_number_of_patients_created << Person.count
 			@migration_stats["total_number_of_patients_created"] = @total_number_of_patients_created    
-      @total_number_of_patients_created_on_site = Person.by_assigned_site.keys([site.code]).rows.count
+      @total_number_of_patients_created_on_site << Person.by_assigned_site.keys([site.code]).rows.count
 			@migration_stats["total_number_of_patients_created_on_site"] = @total_number_of_patients_created_on_site
-      @total_number_of_patients_created_from_other_site = @total_number_of_patients_created - @total_number_of_patients_created_on_site
-			@migration_stats["total_number_of_patients_created_from_other_site"] = @total_number_of_patients_created_from_other_site
-      @total_number_of_male_patients = Person.by_gender.keys(["M"]).rows.count
+
+      #@total_number_of_patients_created_from_other_site = @total_number_of_patients_created - @total_number_of_patients_created_on_site
+
+			#@migration_stats["total_number_of_patients_created_from_other_site"] = @total_number_of_patients_created_from_other_site
+
+
+      @total_number_of_male_patients << Person.by_gender.keys(["M"]).rows.count
 			@migration_stats["total_number_of_male_patients"] = @total_number_of_male_patients
-      @total_number_of_male_patients_on_site = Person.by_gender_and_assigned_site.keys([["M",site.code]]).rows.count
+      @total_number_of_male_patients_on_site << Person.by_gender_and_assigned_site.keys([["M",site.code]]).rows.count
 			@migration_stats["total_number_of_male_patients_on_site"] = @total_number_of_male_patients_on_site
-      @total_number_of_female_patients = Person.by_gender.keys(["F"]).rows.count
+      @total_number_of_female_patients << Person.by_gender.keys(["F"]).rows.count
 			@migration_stats["total_number_of_female_patients"] = @total_number_of_female_patients
-			@total_number_of_female_patients_on_site = Person.by_gender_and_assigned_site.keys([["F",site.code]]).rows.count
+			@total_number_of_female_patients_on_site << Person.by_gender_and_assigned_site.keys([["F",site.code]]).rows.count
 			@migration_stats["total_number_of_female_patients_on_site"] =  @total_number_of_female_patients_on_site
-      @total_number_of_patients_without_gender = Person.by_gender.keys([""]).rows.count
+      @total_number_of_patients_without_gender << Person.by_gender.keys([""]).rows.count
 			@migration_stats["total_number_of_patients_without_gender"] = @total_number_of_patients_without_gender
-      @total_number_of_patients_without_gender_on_site = Person.by_gender_and_assigned_site.keys([["",site.code]]).rows.count
+      @total_number_of_patients_without_gender_on_site << Person.by_gender_and_assigned_site.keys([["",site.code]]).rows.count
 			@migration_stats["total_number_of_patients_without_gender_on_site"] = @total_number_of_patients_without_gender_on_site
+
       
+
+   end   
+     @total_number_of_npids =  @migration_stats["total_number_of_npids"].first
+     @migration_stats.delete("total_number_of_npids")
+     @total_number_npids_assigned_to_patients = @migration_stats["total_number_of_npids_assigned_to_patients"].first
+     @migration_stats.delete("total_number_of_npids_assigned_to_patients")
+     @total_number_of_patients_created = @migration_stats["total_number_of_patients_created"].first
+     @migration_stats.delete("total_number_of_patients_created")
+     @total_number_of_male_patients  = @migration_stats["total_number_of_male_patients"].first
+     @migration_stats.delete("total_number_of_male_patients")
+     @total_number_of_female_patients = @migration_stats["total_number_of_female_patients"].first
+     @migration_stats.delete("total_number_of_female_patients")
+     @total_number_of_patients_without_gender = @migration_stats["total_number_of_patients_without_gender"].first
+     @migration_stats.delete("total_number_of_patients_without_gender") 
+   
   end
 end

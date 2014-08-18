@@ -10,11 +10,6 @@
   background-color: beige; 
   }
 
-.figures {
-  text-align:center; 
-  vertical-align:middle;
-  width: 50%;
-}
 
 #header {
  width: 1168px;
@@ -43,7 +38,7 @@ table, th, td
   border: 1px solid black;
   
 }
-.figures {
+td, .figures {
 	text-align: left;
 	padding-left: 10px;
 
@@ -52,21 +47,60 @@ table, th, td
 </style>
 <div id ="container">
 <div id="header">
-<h1><%= @site_name %> Post-migration Report</h1>
+<h1>DDE2 Post-migration Report</h1>
 </div>
 
 <div id="postmigration">
 <table>
+<tr><th>Indicator</th><% @sites.each do |site| %>
+            <th><%= site %></th> 
+            <% end %>
+ <th>Queried Total</td>
+ <th>Computed Total</td>
+</tr>
+
 <% @migration_stats.each do |k,v| %>
      <tr class="<%= cycle('even', 'odd') %>">
       <td>
  <%= k.split("_").join(" ").humanize + ":" %>
       </td>
+    <% v.each do |vv| %>
   <td class="figures">
- <%= v.to_s %>
+   <%= vv.to_s %>
       </td>
+   <%end%>
+
+    <% case k 
+			 when "total_number_of_npids_allocated_to_site"
+            queried_total = @total_number_of_npids
+            computed_total = v.sum
+       when "total_number_of_npids_assigned_to_patients_on_site"
+           queried_total =  @total_number_npids_assigned_to_patients
+           computed_total = v.sum
+       when "total_number_of_patients_created_on_site"
+           queried_total = @total_number_of_patients_created
+           computed_total = v.sum
+       when "total_number_of_male_patients_on_site"
+          queried_total = @total_number_of_male_patients
+          computed_total = v.sum
+       when "total_number_of_female_patients_on_site"
+           queried_total = @total_number_of_female_patients
+           computed_total = v.sum    
+       when "total_number_of_patients_without_gender_on_site"
+           queried_total = @total_number_of_patients_without_gender
+           computed_total = v.sum
+       else
+         total = v.sum
+       end
+     %>
+
+   <td><%= queried_total %></td>
+   <td><%= computed_total %></td>
      </tr>
 <%end%>
+
+
+
 </table>
 <p><%= link_to "Pre-migration Report", "/people/premigration" %></p>
 <p><%= link_to "Migration Validator", "/people/index" %></p>

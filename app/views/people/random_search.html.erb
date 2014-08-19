@@ -4,23 +4,32 @@
     }
 table {
      width: 100%;
+     background-color: beige;
 }
 
 td {
   width: 25%;
 }
 
+#searchbox {
+  background-color: beige;
+  padding-top: 10px;
+}
+
 </style>
 <div id ="container">
 <div id="header">
 <h1>Random Search</h1>
+<hr size="2">
 <h2><%= @site_name %></h2>
+
 </div>
 
 
 <div id="searchbox">
 <%= form_tag("/people/random_search", method:"post") do %>
   <p>Select Number of Random National Identifiers:   <%= select_tag 'random_count', options_for_select([" ", 5,10,25,100]), {:onchange => 'this.form.submit()'} %></p>
+<hr size="2">
 <% end %>
 </div>
 

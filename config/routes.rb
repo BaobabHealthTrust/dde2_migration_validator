@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
 
+  post 'people/index'
   get 'people/index'
   get 'people/premigration'
   get 'people/postmigration'
+  post 'people/random_search'
+  get 'people/random_search'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

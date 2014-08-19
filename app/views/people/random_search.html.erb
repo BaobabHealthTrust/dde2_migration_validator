@@ -1,5 +1,14 @@
 <style type="text/css">
+  body{
+     padding: 10px;
+    }
+table {
+     width: 100%;
+}
 
+td {
+  width: 25%;
+}
 
 </style>
 <div id ="container">
@@ -15,13 +24,6 @@
 <% end %>
 </div>
 
-<div id="search_results">
-
-<div id="error_message">
-
-</div>
-<div id="dde_person">
-
 <%
 site_code_mismatch = false 
 given_name_mismatch = false
@@ -32,10 +34,10 @@ birthdate_estimated_mismatch = false
 national_id_mismatch = false 
 %>
 
-<% @national_ids.each do |national_id| %>
-
 <table>
 <tr><th colspan="2" >DDE</th><th cospan="2">DDE2<th></tr>
+
+<% @national_ids.each do |national_id| %>
 
 <tr class=<%="mismatch" if national_id_mismatch == true %>><td>National id:</td><td><%= national_id["person_dde_value"] rescue nil %></td>
 <td>National id:</td><td><%= national_id["person_dde2"].national_id rescue nil %></td></tr>
@@ -54,12 +56,8 @@ national_id_mismatch = false
 <td>Birthdate:</td><td><%= national_id["person_dde2"].birthdate rescue nil %></td></tr>
 
 <tr class=<%= "mismatch" if birthdate_estimated_mismatch == true %>><td>Birthdate estimated:</td><td><%= national_id["person_dde"].birthdate_estimated rescue nil%></td><td>Birthdate estimated:</td><td><%= national_id["person_dde2"].birthdate_estimated rescue nil %></td></tr>
-<hr>
-</table>
-
+<tr><td colspan="4"><hr></td></tr>
 <% end %>
-
-</div>
-</div>
+</table>
 <p><%= link_to "Migration Validator", "/people/index" %></p>
 </div> 

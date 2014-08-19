@@ -12,11 +12,9 @@ class PeopleController < ApplicationController
 		end
 
     @dde_people_count = line_num
-    if params[:npid].blank? and !params[:random_npid].blank?
-      national_id = params[:random_npid] 
-    else
-      national_id = params[:npid] 
-    end
+    
+    national_id = params[:npid] 
+    
     
     
     site_id = DdeSite.find_by_code(CONFIG['site_code']).id
@@ -39,9 +37,7 @@ class PeopleController < ApplicationController
     else
 
     end 
-      commang_string = "SELECT value FROM national_patient_identifiers WHERE assigned_at IS NOT NULL ORDER BY RAND() LIMIT 100"  
-    	random_npids = DdeNationalPatientIdentifier.find_by_sql(commang_string)
-      @random_npids = random_npids.map {|npid| npid.value }
+      
   end
 
   def premigration
@@ -205,5 +201,18 @@ class PeopleController < ApplicationController
 		   @total_number_of_patients_without_gender = @migration_stats["total_number_of_patients_without_gender"].first
 		   @migration_stats.delete("total_number_of_patients_without_gender") 
 		 
+  end
+  
+  def random_search
+    site_id = DdeSite.find_by_code(CONFIG['site_code']).id 
+    unless params[:random_count].blank?
+      random_count = params[:random_count] 
+      commang_string = "SELECT value FROM national_patient_identifiers WHERE assigned_at IS NOT NULL ORDER BY RAND() LIMIT #{random_count}"  
+      random_npids = DdeNationalPatientIdentifier.find_by_sql(commang_string)
+      @random_npids = random_npids.map {|npid| npid.value }
+      raise @random_npids.count.to_s
+    end
+    
+  
   end
 end

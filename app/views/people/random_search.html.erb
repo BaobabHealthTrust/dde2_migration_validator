@@ -79,14 +79,12 @@ table {
 <h2><%= @site_name %></h2>
 </div>
 <div id="counter">
-<p>DDE2 people count: <%= @dde2_people_count %></p>
-<p>Script iteration count: <%= @dde_people_count %></p>
+
 </div>
 
 <div id="searchbox">
-<%= form_tag("/people/index", method:"post") do %>
-  <p><%= text_field_tag(:npid)%>
-  <%= submit_tag("Find record")%></p>
+<%= form_tag("/people/random_search", method:"post") do %>
+  <p><%= select_tag 'random_count', options_for_select([" ", 5,10,25,100]), {:onchange => 'this.form.submit()'} %></p>
 <% end %>
 </div>
 
@@ -146,5 +144,5 @@ end
 </div>
 </div>
 <p><%= link_to "Random Search", "/people/random_search" %></p>
-<p><%= link_to "Pre-migration Report", "/people/premigration" %></p>
+<p><%= link_to "Migration Validator", "/people/index" %></p>
 </div> 

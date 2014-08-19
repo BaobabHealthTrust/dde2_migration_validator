@@ -204,15 +204,42 @@ class PeopleController < ApplicationController
   end
   
   def random_search
-    site_id = DdeSite.find_by_code(CONFIG['site_code']).id 
+    site_id = DdeSite.find_by_code(CONFIG['site_code']).id
+    @national_ids = []
     unless params[:random_count].blank?
       random_count = params[:random_count] 
-      commang_string = "SELECT value FROM national_patient_identifiers WHERE assigned_at IS NOT NULL ORDER BY RAND() LIMIT #{random_count}"  
-      random_npids = DdeNationalPatientIdentifier.find_by_sql(commang_string)
-      @random_npids = random_npids.map {|npid| npid.value }
-      raise @random_npids.count.to_s
-    end
-    
-  
-  end
+      command_string = "SELECT value FROM national_patient_identifiers WHERE assigned_at IS NOT NULL ORDER BY RAND() LIMIT #{random_count}"
+      random_npids = DdeNationalPatientIdentifier.find_by_sql(command_string)
+      npids = random_npids.map {|npid| npid.value }
+      
+      npids.each do |npid|
+         dde2_person = Person.find(npid) rescue nil
+         dde_person = DdeNationalPatientIdentifier.find_by_value(npid).person rescue nil
+         if !dde2_person.blank? and !dde_person.blank?
+           national_id_mismatch =  dde_person.national_patient_identifier.value.to_s != dde2_person.national_id.to_s ? true : nil
+    			 site_code_mismatch =  dde_person.national_patient_identifier.assigner_site.code.to_s != dde2_person.assigned_site.to_s ? true : nil
+           given_name_mismatch = dde_person.given_name.to_s != dde2_person.names.given_name.to_s ? true : nil
+           family_name_mismatch = dde_person.family_name.to_s != dde2_person.names.family_name.to_s ? true : nil
+           gender_mismatch =  dde_person.gender.to_s != dde2_person.gender.to_s ? true : nil
+           birthdate_mismatch = dde_person.birthdate.to_s != dde2_person.birthdate.to_s ? true : nil
+           birthdate_estimated_mismatch = dde_person.birthdate_estimated.to_s != dde2_person.birthdate_estimated.to_s ? true : nil
+
+     			if national_id_mismatch || site_code_mismatch || given_name_mismatch || family_name_mismatch || gender_mismatch || birthdate_mismatch   || birthdate_estimated_mismatch
+     					mismatch = true
+     			else
+     					mismatch = false 
+    			end 
+             person = Hash.new
+             value  = dde_person.national_patient_identifier.value.to_s rescue ''
+             site = dde_person.national_patient_identifier.assigner_site.code.to_s rescue ''
+             person = {"person_dde" => dde_person,
+                       "person_dde_value" => value,
+                       "person_dde_site" => site,  
+                       "person_dde2" => dde2_person, 
+                       "mismatch" => mismatch }
+             @national_ids << person
+         end       
+      end
+   end
+ end
 end

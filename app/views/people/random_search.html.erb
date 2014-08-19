@@ -1,148 +1,65 @@
 <style type="text/css">
 
-#counter {
-  width: 500px;
-  height: 100px;
-  background-color: beige;
-  float: left; 
-  }
-#container {
-  background-color: beige;
-  padding: 10px;
-  margin: 10px;
-}
-#searchbox {
-  width: 500px;
-  height: 100px;
-  background-color: beige;
-  float: right; 
-  }
-
-#error_message{
-  width: 1148px;
-  height: 40px;
-  margin-left: auto;
-  margin-right:auto;
-  clear: both;
- }
-.error {
-  background-color: #FF3300;
-}
-
-.mismatch {
- background-color: #FF6699;
-}
-
-.match {
- background-color: #66FF00;
-}
-table {
- border-collapse: collapse;
-}
-#search_results {
- width: 1168px;
- height: 280px;
- margin-left: auto;
- margin-right: auto;
- background-color: beige;
- clear: both;
-
-}
-
-#dde_person {
-  width: 500px;
-  height: 220px;
-  background-color: beige;
-  float: left; 
-  }
-
-#dde2_person {
-  width: 500px;
-  height: 220px;
-  background-color: beige;
-  float: right; 
-  }
-
-#header {
- width: 1168px;
- margin-left: auto;
- margin-right: auto;
- background-color: beige;
- clear: both;
-
-}
 
 </style>
 <div id ="container">
 <div id="header">
-<h1>DDE to DDE2 Migration Validator</h1>
+<h1>Random Search</h1>
 <h2><%= @site_name %></h2>
 </div>
-<div id="counter">
 
-</div>
 
 <div id="searchbox">
 <%= form_tag("/people/random_search", method:"post") do %>
-  <p><%= select_tag 'random_count', options_for_select([" ", 5,10,25,100]), {:onchange => 'this.form.submit()'} %></p>
+  <p>Select Number of Random National Identifiers:   <%= select_tag 'random_count', options_for_select([" ", 5,10,25,100]), {:onchange => 'this.form.submit()'} %></p>
 <% end %>
 </div>
 
 <div id="search_results">
 
-<% unless @dde_person.blank?
-   unless @dde2_person.blank?
-     national_id_mismatch =  @dde_person.national_patient_identifier.value.to_s != @dde2_person.national_id.to_s ? true : nil
-     site_code_mismatch =  @dde_person.national_patient_identifier.assigner_site.code.to_s != @dde2_person.assigned_site.to_s ? true : nil
-     given_name_mismatch = @dde_person.given_name.to_s != @dde2_person.names.given_name.to_s ? true : nil
-     family_name_mismatch = @dde_person.family_name.to_s != @dde2_person.names.family_name.to_s ? true : nil
-     gender_mismatch =  @dde_person.gender.to_s != @dde2_person.gender.to_s ? true : nil
-     birthdate_mismatch = @dde_person.birthdate.to_s != @dde2_person.birthdate.to_s ? true : nil
-     birthdate_estimated_mismatch = @dde_person.birthdate_estimated.to_s != @dde2_person.birthdate_estimated.to_s ? true : nil
-
-     if national_id_mismatch || site_code_mismatch || given_name_mismatch || family_name_mismatch || gender_mismatch || birthdate_mismatch   || birthdate_estimated_mismatch
-     		mismatch = true
-     else
-     		mismatch = false 
-    end 
-   end
-end
-
-%>
-
-
 <div id="error_message">
-<p class="mismatch"><%= @error  %></p>
-<p class="mismatch"><%= "The records do not match"  if mismatch == true %><p>
-<p class="match"><%= "The records match"  if mismatch == false %><p>
+
 </div>
 <div id="dde_person">
 
+<%
+site_code_mismatch = false 
+given_name_mismatch = false
+family_name_mismatch = false 
+gender_mismatch = false
+birthdate_mismatch = false 
+birthdate_estimated_mismatch = false
+national_id_mismatch = false 
+%>
+
+<% @national_ids.each do |national_id| %>
 
 <table>
-<tr><th>DDE</th></tr>
-<tr class=<%="mismatch" if national_id_mismatch == true %>><td>National id:</td><td><%= @dde_person.national_patient_identifier.value rescue nil %></td></tr>
-<tr class=<%="mismatch" if site_code_mismatch == true %>><td>Site code:</td><td><%= @dde_person.national_patient_identifier.assigner_site.code rescue nil %></td></tr>
-<tr class=<%= "mismatch" if given_name_mismatch == true %>><td>Given name:</td><td><%= @dde_person.given_name rescue nil %></td></tr>
-<tr class=<%= "mismatch" if family_name_mismatch == true %>><td>Family name:</td><td><%=@dde_person.family_name rescue nil %></td></tr>
-<tr class=<%= "mismatch" if gender_mismatch == true %>><td>Gender:</td><td><%= @dde_person.gender rescue nil %></td></tr>
-<tr class=<%= "mismatch" if birthdate_mismatch == true %>><td>Birthdate:</td><td><%= @dde_person.birthdate rescue nil %></td></tr>
-<tr class=<%= "mismatch" if birthdate_estimated_mismatch == true %>><td>Birthdate estimated:</td><td><%= @dde_person.birthdate_estimated rescue nil%></td></tr>
+<tr><th colspan="2" >DDE</th><th cospan="2">DDE2<th></tr>
+
+<tr class=<%="mismatch" if national_id_mismatch == true %>><td>National id:</td><td><%= national_id["person_dde_value"] rescue nil %></td>
+<td>National id:</td><td><%= national_id["person_dde2"].national_id rescue nil %></td></tr>
+
+<tr class=<%="mismatch" if site_code_mismatch == true %>><td>Site code:</td><td><%= national_id["person_dde_site"] rescue nil %></td>
+<td>Site code:</td><td><%= national_id["person_dde2"].assigned_site rescue nil %></td></tr>
+
+<tr class=<%= "mismatch" if given_name_mismatch == true %>><td>Given name:</td><td><%= national_id["person_dde"].given_name rescue nil %></td><td>Given name:</td><td><%= national_id["person_dde2"].names.given_name rescue nil %></td></tr>
+
+<tr class=<%= "mismatch" if family_name_mismatch == true %>><td>Family name:</td><td><%=national_id["person_dde"].family_name rescue nil %></td><td>Family name:</td><td><%= national_id["person_dde2"].names.family_name rescue nil %></td></tr>
+
+<tr class=<%= "mismatch" if gender_mismatch == true %>><td>Gender:</td><td><%= national_id["person_dde"].gender rescue nil %></td>
+<td>Gender:</td><td><%= national_id["person_dde2"].gender rescue nil %></td></tr>
+
+<tr class=<%= "mismatch" if birthdate_mismatch == true %>><td>Birthdate:</td><td><%= national_id["person_dde"].birthdate rescue nil %></td>
+<td>Birthdate:</td><td><%= national_id["person_dde2"].birthdate rescue nil %></td></tr>
+
+<tr class=<%= "mismatch" if birthdate_estimated_mismatch == true %>><td>Birthdate estimated:</td><td><%= national_id["person_dde"].birthdate_estimated rescue nil%></td><td>Birthdate estimated:</td><td><%= national_id["person_dde2"].birthdate_estimated rescue nil %></td></tr>
+<hr>
 </table>
-</div>
-<div id="dde2_person">
-<table>
-<tr><th>DDE2</th></tr>
-<tr class=<%="mismatch" if national_id_mismatch == true %>><td>National id:</td><td><%= @dde2_person.national_id rescue nil %></td></tr>
-<tr class=<%= "mismatch" if site_code_mismatch == true %>><td>Site code:</td><td><%= @dde2_person.assigned_site rescue nil %></td></tr>
-<tr class=<%= "mismatch" if given_name_mismatch == true %>><td>Given name:</td><td><%= @dde2_person.names.given_name rescue nil %></td></tr>
-<tr class=<%= "mismatch" if family_name_mismatch == true %>><td>Family name:</td><td><%= @dde2_person.names.family_name rescue nil %></td></tr>
-<tr class=<%= "mismatch" if gender_mismatch == true %>><td>Gender:</td><td><%= @dde2_person.gender rescue nil %></td></tr>
-<tr class=<%= "mismatch" if birthdate_mismatch == true %>><td>Birthdate:</td><td><%= @dde2_person.birthdate rescue nil %></td></tr>
-<tr class=<%= "mismatch" if birthdate_estimated_mismatch == true %>><td>Birthdate estimated:</td><td><%= @dde2_person.birthdate_estimated rescue nil %></td></tr>
-</table>
+
+<% end %>
+
 </div>
 </div>
-<p><%= link_to "Random Search", "/people/random_search" %></p>
 <p><%= link_to "Migration Validator", "/people/index" %></p>
 </div> 

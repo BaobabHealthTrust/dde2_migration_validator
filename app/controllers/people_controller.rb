@@ -12,7 +12,13 @@ class PeopleController < ApplicationController
 		end
 
     @dde_people_count = line_num
-    national_id = params[:npid]
+    if params[:npid].blank? and !params[:random_npid].blank?
+      national_id = params[:random_npid] 
+    else
+      national_id = params[:npid] 
+    end
+    
+    
     site_id = DdeSite.find_by_code(CONFIG['site_code']).id
     unless national_id.blank?
       
@@ -32,8 +38,10 @@ class PeopleController < ApplicationController
       end 
     else
 
-    end   
-    	
+    end 
+      commang_string = "SELECT value FROM national_patient_identifiers WHERE assigned_at IS NOT NULL ORDER BY RAND() LIMIT 100"  
+    	random_npids = DdeNationalPatientIdentifier.find_by_sql(commang_string)
+      @random_npids = random_npids.map {|npid| npid.value }
   end
 
   def premigration

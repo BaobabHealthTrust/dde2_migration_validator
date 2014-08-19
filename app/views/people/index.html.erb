@@ -85,8 +85,10 @@ table {
 
 <div id="searchbox">
 <%= form_tag("/people/index", method:"get") do %>
-  <%= text_field_tag(:npid)%>
-  <%= submit_tag("Find record")%>
+  <p><%= text_field_tag(:npid)%>
+  <%= submit_tag("Find record")%></p>
+  <p><%= select_tag 'random_npid', options_for_select(@random_npids), {:onchange => 'this.form.submit()'} %></p>
+  
 <% end %>
 </div>
 

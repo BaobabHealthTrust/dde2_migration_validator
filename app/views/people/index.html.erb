@@ -30,7 +30,7 @@
 }
 
 .mismatch {
- background-color: #CCFF66;
+ background-color: #FF6699;
 }
 
 .match {
@@ -114,7 +114,7 @@ end
 
 
 <div id="error_message">
-<p class="error"><%= @error  %></p>
+<p class="mismatch"><%= @error  %></p>
 <p class="mismatch"><%= "The records do not match"  if mismatch == true %><p>
 <p class="match"><%= "The records match"  if mismatch == false %><p>
 </div>

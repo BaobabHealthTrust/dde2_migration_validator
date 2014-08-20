@@ -46,7 +46,7 @@
 <h2><%= @site_name %></h2>
 
 </div>
-<% mismatch = false%>
+<% mismatch = 0%>
 <% @national_ids.each do |national_id| 
      national_id_mismatch = national_id["person_dde_value"].to_s != national_id["person_dde2"].national_id.to_s ? true : nil
      site_code_mismatch = national_id["person_dde_site"].to_s != national_id["person_dde2"].assigned_site.to_s ? true : nil
@@ -57,13 +57,11 @@
      birthdate_estimated_mismatch = national_id["person_dde"].birthdate_estimated.to_s != national_id["person_dde2"].birthdate_estimated.to_s ? true : nil
     
      if national_id_mismatch || site_code_mismatch || given_name_mismatch || family_name_mismatch || gender_mismatch || birthdate_mismatch   || birthdate_estimated_mismatch
-     		mismatch = true
-        break
+     		mismatch +=1
+  
      end
 end
 %>
-
-
 
 <div id="searchbox">
 <%= form_tag("/people/random_search", method:"post") do %>
@@ -72,7 +70,7 @@ end
 <hr size="2">
 <% end %>
 <h5><%= "Returned #{@national_ids.length} records"  unless @national_ids.blank? %></h5>
-<h5 class='mis_match' ><%= "There are some mismatches"  if mismatch == true %></h5>
+<h5 class='mis_match' ><%= "There are #{mismatch} mismatches "  if mismatch > 0 %></h5>
 </div>
 
 <table>
@@ -96,7 +94,6 @@ end
      end
 %>
   
-
     <tr class=<%="mismatch" if national_id["person_dde_value"].to_s != national_id["person_dde2"].national_id.to_s %>>
 		<td>National id:</td><td><%= national_id["person_dde_value"] rescue nil %></td>
 		<td>National id:</td><td><%= national_id["person_dde2"].national_id rescue nil %></td></tr>

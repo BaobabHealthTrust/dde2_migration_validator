@@ -14,9 +14,7 @@ class PeopleController < ApplicationController
     @dde_people_count = line_num
     
     national_id = params[:npid] 
-    
-    
-    
+   
     site_id = DdeSite.find_by_code(CONFIG['site_code']).id
     unless national_id.blank?
       
@@ -204,7 +202,9 @@ class PeopleController < ApplicationController
   end
   
   def random_search
-    site_id = DdeSite.find_by_code(CONFIG['site_code']).id
+    site = DdeSite.find_by_code(CONFIG['site_code'])
+    site_id = site.id
+    @site_name = site.name
     @national_ids = []
     unless params[:random_count].blank?
       random_count = params[:random_count] 

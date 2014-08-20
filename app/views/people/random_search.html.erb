@@ -4,8 +4,8 @@
     }
 
 	#container {
-  		background-color: beige;
       padding-top: 5px;
+      background-color: beige;
 		}
 
 	table {
@@ -38,6 +38,11 @@
 		     padding-left : 5px;
 		     padding-right: 5px;
 	}
+
+	th {
+     background-color: #C8C8C8;
+	}
+   
 
 </style>
 <div id ="container">
@@ -94,7 +99,6 @@ end
      		mismatch = false 
      end
 %>
-  
     <tr class=<%="mismatch" if national_id["person_dde_value"].to_s != national_id["person_dde2"].national_id.to_s %>>
 		<td>National id:</td><td><%= national_id["person_dde_value"] rescue nil %></td>
 		<td>National id:</td><td><%= national_id["person_dde2"].national_id rescue nil %></td></tr>
@@ -124,6 +128,7 @@ end
 		<td>Birthdate estimated:</td><td><%= national_id["person_dde2"].birthdate_estimated rescue nil %></td></tr>
 
 		<tr><td colspan="4"><hr></td></tr>
+    
 <% end %>
 </table>
 <p><%= link_to "Migration Validator", "/people/index" %></p>

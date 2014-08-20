@@ -70,7 +70,7 @@ end
 <hr size="2">
 <% end %>
 <h5><%= "Returned #{@national_ids.length} records"  unless @national_ids.blank? %></h5>
-<h5 class='mis_match' ><%= "There are #{mismatch} mismatches "  if mismatch > 0 %></h5>
+<h5 class='mis_match' ><%=  mismatch > 1 ? "There are #{mismatch} mismatches " : "There is #{mismatch} mismatch" if mismatch > 0 %></h5>
 </div>
 
 <table>

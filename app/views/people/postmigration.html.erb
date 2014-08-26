@@ -28,6 +28,8 @@
 
 table {
  width: 98%;
+ margin-top: 0px;
+ padding-top: 0px;
 }
 
 table, th, td
@@ -42,10 +44,26 @@ td, .figures {
 
 }
 
+#site_info {
+  width: 500px;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+#site_info .odd {
+  background-color: #66FFFF;
+}
+
+#site_info .even {
+  background-color: #66CCFF;
+}
+
 </style>
 <div id ="container">
 <div id="header">
 <h1>DDE2 Post-migration Report</h1>
+<br>
+<br>
 </div>
 
 <div id="postmigration">
@@ -97,9 +115,18 @@ td, .figures {
      </tr>
 <%end%>
 
-
-
 </table>
+</div>
+<br>
+<br>
+<br>
+<div id="sites">
+  <table id="site_info">
+  <tr><th>#</th><th>Code</th><th>Name</th></tr>
+    <% @sites_info.each do |site_info|%>
+    <tr class="<%= cycle('even', 'odd') %>"><td><%= site_info.id %></td><td><%= site_info.code %></td><td><%= site_info.name %></td></tr>
+  <% end %>
+  </table>
 <p><%= link_to "Pre-migration Report", "/people/premigration" %></p>
 <p><%= link_to "Migration Validator", "/people/index" %></p>
 </div>

@@ -129,7 +129,7 @@ class PeopleController < ApplicationController
   end
 
   def postmigration
-   
+      @sites_info = DdeSite.all
       @migration_stats_multiple = []
       @total_number_npids = []
 			@total_number_npids_allocated_to_site = []

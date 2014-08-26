@@ -6,11 +6,11 @@ default: &default
 production:
   <<: *default
   mode: proxy
-  site_code: MTA
-  sites: MTA
+  site_code: A18
+  sites: A18 LIK KHC 312 XXL 696 MPC 526 CHA MTA MTU MZC NAH QCH KAN MHC NHC DLH DOW NCH STG MLB PMH MJD BHC NDC EXC DZA KAS
 
 development:
   <<: *default
   mode: proxy
   site_code: A18
-  sites: A18
+  sites: A18 LIK KHC 312 XXL 696 MPC 526 CHA MTA MTU MZC NAH QCH KAN MHC NHC DLH DOW NCH STG MLB PMH MJD BHC NDC EXC DZA KAS

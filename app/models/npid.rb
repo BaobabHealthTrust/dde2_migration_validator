@@ -17,6 +17,7 @@ class Npid < CouchRest::Model::Base
   
   timestamps!
   
+  # Can be replaced with "Npid.by_site_code.include_docs.keys([SITE_CODE]).page(PAGE).per(PAGE_SIZE).rows"
   def self.where(params = {})
     result = []
     limit = 0

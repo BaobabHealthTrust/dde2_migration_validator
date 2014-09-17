@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   get 'people/postmigration'
   post 'people/random_search'
   get 'people/random_search'
+  
+  get '/pre' => "people#premigration"
+  
+  get '/post' => "people#postmigration"
 
 
   # The priority is based upon order of creation: first created -> highest priority.

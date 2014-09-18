@@ -14,9 +14,15 @@ How to setup:
 
 * configure couchdb.yml and database.yml to point to correct databases
 
+* configure site_config.yml 
+
 * generate a secret for secrets.yml if you want to run the application in production
 
-* leave site_config.yml with the defaults
+* run bundle install
+
+* run script/db_setup.sh [environment]
+
+* run application
 
 
 

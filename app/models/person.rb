@@ -33,6 +33,7 @@ class Person < CouchRest::Model::Base
     property :given_name, String
     property :family_name, String
     property :middle_name, String
+    property :maiden_name, String
     property :given_name_code, String
     property :family_name_code, String
   end
@@ -45,7 +46,6 @@ class Person < CouchRest::Model::Base
   property :birthdate_estimated,  TrueClass, :default => false
 
   property :addresses do
-    property :landmark, String
     property :current_residence, String
     property :current_village, String
     property :current_ta, String
@@ -198,7 +198,7 @@ class Person < CouchRest::Model::Base
            		return decimal;                 
 	        };
 	        var decimal = doc._id.trim().toDecimal();	
-	        if(String(parseInt(decimal / 10)).checkDigit() != (decimal % 10)){
+	        if(String(parseInt(decimal / 10)).checkDigit() != (decimal % 10) && doc.type == 'Person'){
 		        emit(doc._id, null);
 	        }
         }"
